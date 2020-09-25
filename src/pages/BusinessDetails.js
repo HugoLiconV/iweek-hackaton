@@ -3,8 +3,16 @@ import { MdPhone, MdMailOutline } from "react-icons/md";
 import Carousel from "../components/Carousel";
 import ChihuahuaMarketBadge from "../components/ChihuahuaMarketBadge";
 import Tag from "../components/Tag";
+//import { useMapJustMounted } from '../functions/map';
+import TomTomMap from '../components/TomTomMap';
 
 const BusinessDetails = () => {
+
+  //function Component(props) {
+  //  const [mapRef, setRef] = useMapJustMounted(placeBranchOfficeMarkerInMap);
+  //  return <TomTomMap ref={setRef} />
+  //}
+  
   return (
     <div className="container">
       <h1>Burritos de a 5</h1>
@@ -23,6 +31,8 @@ const BusinessDetails = () => {
         recusandae ducimus temporibus ducimus quia. Aut expedita veritatis
         corporis quo.
       </p>
+      <h2>Ubicación</h2>
+      <TomTomMap />
       <h2>Contacto</h2>
       <div style={{ display: "flex", alignItems: "center", marginBottom: 8 }}>
         <MdPhone style={{ marginRight: 8 }} />

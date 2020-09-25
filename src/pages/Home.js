@@ -8,9 +8,9 @@ import Loading from "../components/Loading";
 
 const Home = (props) => {
   console.log("Home -> props", props)
-  const { isLoading, error, data } = useQuery("business", fetchBusiness);
+  const { isLoading, error, data } = useQuery("businesses", fetchBusiness);
   if (isLoading) {
-    return <Loading title="Cargando categorías" />;
+    return <Loading title="Cargando negocios" />;
   }
 
   if (error) {
