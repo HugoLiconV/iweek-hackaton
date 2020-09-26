@@ -17,21 +17,12 @@ const ActionsBottomBar = () => {
         backgroundColor: "#FFF"
       }}
     >
-      <NavLink
-        to="/"
-        style={{
-          textDecoration: "none",
-          color: "#444",
-          fontSize: 28
-        }}
-      >
-        Inicio
-      </NavLink>
+      <NavLink to="/">Inicio</NavLink>
       <NavLink
         to="/create-business"
         style={{
           borderRadius: 50,
-          border: "2px solid #444",
+          border: "2px solid",
           width: 50,
           height: 50,
           display: "flex",
@@ -39,18 +30,9 @@ const ActionsBottomBar = () => {
           alignItems: "center"
         }}
       >
-        <MdAdd size={32} color="#444" />
+        <MdAdd size={32} color="inherit" />
       </NavLink>
-      <NavLink
-        to="/profile"
-        style={{
-          textDecoration: "none",
-          color: "#444",
-          fontSize: 28
-        }}
-      >
-        Perfil
-      </NavLink>
+      <NavLink to="/profile">Perfil</NavLink>
     </nav>
   );
 };
