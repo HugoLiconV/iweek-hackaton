@@ -9,20 +9,17 @@
   --highlight-color: #6246ea;
   --secondary-color: #d1d1e9;
   --tertiary-color: #00ebc7;
+  --error-color: #ff5470;
 }
 
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+  .loading-icon {
+    animation: loading-spin infinite 1s linear;
   }
 }
 
@@ -41,7 +38,7 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
+@keyframes loading-spin {
   from {
     transform: rotate(0deg);
   }
@@ -100,4 +97,24 @@ textarea:focus {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   display: inline-block;
+}
+
+.error-message {
+  background-color: var(--error-color);
+  padding: 1rem;
+  color: var(--main-color);
+  margin: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-weight: bold;
 }

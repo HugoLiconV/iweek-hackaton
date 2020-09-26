@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profiile";
 import CreateBusiness from "./pages/CreateBusiness";
 import BusinessDetails from "./pages/BusinessDetails";
+import { ReactQueryDevtools } from "react-query-devtools";
 
 function App() {
   return (
@@ -16,10 +17,10 @@ function App() {
         <BusinessDetails path="/business/:id" />
         <CreateBusiness path="/create-business" />
       </Router>
+      <ReactQueryDevtools initialIsOpen />
       <ActionsBottomBar />
     </>
   );
 }
 
 export default App;
-
