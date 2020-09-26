@@ -15,7 +15,7 @@
   margin-bottom: calc(-.25 * var(--gutter));
 }
 
-ul {
+ul[class="hs"] {
   list-style: none;
   padding: 0;
 }
