@@ -1,9 +1,10 @@
 import React from "react";
 import { MdStar } from "react-icons/md";
 
-const BusinessCard = () => {
+const BusinessCard = ({ business, onClick }) => {
   return (
     <div
+      onClick={() => onClick(business.id)}
       style={{
         display: "flex",
         margin: 16,
@@ -32,31 +33,28 @@ const BusinessCard = () => {
             alignItems: "baseline"
           }}
         >
-          <h3 style={{ margin: 0 }}>Burritos de 5</h3>
+          <h3 style={{ margin: 0 }}>{business.name}</h3>
           <span>
-            4.1 <MdStar />
+            {business.ratings} <MdStar />
           </span>
         </div>
         <p
           className="text-overflow-hidden"
           style={{ textAlign: "justify", margin: "0 16px 16px 16px" }}
         >
-          Dignissimos est et at nihil dolorum nesciunt et. Optio dolorum nihil
-          ut beatae. Ad dolor laborum itaque recusandae quae porro voluptas.
+          {business.information}
         </p>
       </div>
     </div>
   );
 };
 
-const BusinessList = ({}) => {
+const BusinessList = ({ business, onClick }) => {
   return (
     <>
-      <BusinessCard />
-      <BusinessCard />
-      <BusinessCard />
-      <BusinessCard />
-      <BusinessCard />
+      {business.map(b => (
+        <BusinessCard key={b.id} business={b} onClick={onClick} />
+      ))}
     </>
   );
 };
