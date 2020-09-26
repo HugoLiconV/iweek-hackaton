@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Map from "../components/Map";
 
 const CreateBusiness = () => {
   const [images, setImages] = useState([]);
