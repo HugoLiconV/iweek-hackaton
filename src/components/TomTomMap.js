@@ -85,6 +85,8 @@ class TomTomMap extends Component {
 
     const foundMarker = this.markers.findIndex(m => m.options.title === title);
 
+    this.map.setView([coords.lat, coords.lon], 14);
+
     if (foundMarker > -1) {
       this.markers[foundMarker].setLatLng([coords.lat, coords.lon]);
       return this.markers[foundMarker];
