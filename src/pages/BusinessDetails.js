@@ -1,14 +1,55 @@
 import React from "react";
 import { MdPhone, MdMailOutline } from "react-icons/md";
+import { useQuery } from "react-query";
+import { fetchBusinessById } from "../api/business";
 import Carousel from "../components/Carousel";
 import ChihuahuaMarketBadge from "../components/ChihuahuaMarketBadge";
 import Tag from "../components/Tag";
+import TomTomMap, { useMapJustMounted } from "../components/TomTomMap";
+import { useParams } from "@reach/router";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
+
+function PlaceMap({ lat, lng }) {
+  const [, setRef] = useMapJustMounted(ref => {
+    if (lat && lng) {
+      const position = { lat: parseFloat(lat), lon: parseFloat(lng) };
+      ref.addMarker(position, {
+        title: "Ubicación de sucursal",
+        content: "",
+        draggable: false
+      });
+    }
+  });
+  return <TomTomMap ref={setRef} />;
+}
 
 const BusinessDetails = () => {
+  const { id } = useParams();
+  const { isLoading, error, data } = useQuery(
+    ["business", id],
+    fetchBusinessById
+  );
+
+  if (isLoading) {
+    return (
+      <div className="container">
+        <Loading title="Cargando..." />
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="container">
+        <ErrorMessage title="No se pudo cargar la información" />
+      </div>
+    );
+  }
+
   return (
     <div className="container">
-      <h1>Burritos de a 5</h1>
-      <ChihuahuaMarketBadge />
+      <h1>{data.name}</h1>
+      {data.cm_certification && <ChihuahuaMarketBadge />}
       <Tag title="Comida" />
       <Carousel
         images={[
@@ -18,11 +59,9 @@ const BusinessDetails = () => {
         ]}
       />
       <h2>Descripción</h2>
-      <p>
-        Ipsa voluptatum a veniam et ipsum nisi illo. Quia et provident
-        recusandae ducimus temporibus ducimus quia. Aut expedita veritatis
-        corporis quo.
-      </p>
+      <p>{data.information}</p>
+      <h2>Ubicación</h2>
+      <PlaceMap lat={data.latitude} lng={data.longitude} />
       <h2>Contacto</h2>
       <div style={{ display: "flex", alignItems: "center", marginBottom: 8 }}>
         <MdPhone style={{ marginRight: 8 }} />

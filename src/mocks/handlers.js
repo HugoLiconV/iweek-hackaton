@@ -34,7 +34,7 @@ export const handlers = [
       ])
     );
   }),
-  rest.get(`${API_URL}/business`, (req, res, ctx) => {
+  rest.get(`${API_URL}/businesses`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.delay(1000),
@@ -58,7 +58,6 @@ export const handlers = [
   rest.get(`${API_URL}/me`, (req, res, ctx) => {
     return res(
       ctx.status(200),
-      ctx.delay(1000),
       ctx.json({
         id: 1,
         first_name: "Hugo",
@@ -74,6 +73,24 @@ export const handlers = [
         active: true,
         created_at: "2020-09-25T12:40:53.758Z",
         updated_at: "2020-09-25T12:40:53.758Z"
+      })
+    );
+  }),
+  rest.get(`${API_URL}/businesses/:id`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: 1,
+        name: "Tortas Piolin",
+        category_id: 1,
+        information: "Venta de tortas, hamburguesas y tacos.",
+        latitude: "28.6622346",
+        longitude: "-106.0874566",
+        cm_certification: true,
+        ratings: 4.3,
+        active: true,
+        created_at: "2020-09-25T14:47:12.423Z",
+        updated_at: "2020-09-25T14:47:12.423Z"
       })
     );
   })
