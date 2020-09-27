@@ -26,6 +26,7 @@ function PlaceMap({ lat, lng }) {
 
 const BusinessDetails = () => {
   const { id } = useParams();
+  console.log("BusinessDetails -> id", id)
   const { isLoading, error, data } = useQuery(
     ["business", id],
     fetchBusinessById
@@ -50,14 +51,8 @@ const BusinessDetails = () => {
     <div className="container">
       <h1>{data.name}</h1>
       {data.cm_certification && <ChihuahuaMarketBadge />}
-      <Tag title="Comida" />
-      <Carousel
-        images={[
-          "https://via.placeholder.com/1080x720",
-          "https://via.placeholder.com/1080x720",
-          "https://via.placeholder.com/1080x720"
-        ]}
-      />
+      <Tag title={data.category_name} />
+      <Carousel images={data.photos} />
       <h2>Descripción</h2>
       <p>{data.information}</p>
       <h2>Ubicación</h2>

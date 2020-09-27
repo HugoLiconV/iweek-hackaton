@@ -1,5 +1,5 @@
 const config = {
-    tomTomKey: 'dhVudhDFD9ukQMwRPhji4juYWwigYT70',
-  };
+  tomTomKey: process.env.REACT_APP_TOMTOM_KEY
+};
   
   export default config;

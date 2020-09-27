@@ -6,8 +6,8 @@ import Categories from "../components/Categories";
 import ErrorMessage from "../components/ErrorMessage";
 import Loading from "../components/Loading";
 
-const Home = (props) => {
-  console.log("Home -> props", props)
+const Home = props => {
+  console.log("Home -> props", props);
   const { isLoading, error, data } = useQuery("businesses", fetchBusiness);
   if (isLoading) {
     return <Loading title="Cargando negocios" />;
@@ -23,9 +23,9 @@ const Home = (props) => {
 
   return (
     <>
-      <h2>Categorías</h2>
+      <h2 style={{ marginLeft: 16 }}>Categorías</h2>
       <Categories />
-      <h2>Negocios</h2>
+      <h2 style={{ marginLeft: 16 }}>Negocios</h2>
       <BusinessList business={data} onClick={openBusinessDetails} />
     </>
   );
