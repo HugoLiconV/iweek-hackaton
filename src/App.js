@@ -7,6 +7,7 @@ import Profile from "./pages/Profiile";
 import CreateBusiness from "./pages/CreateBusiness";
 import BusinessDetails from "./pages/BusinessDetails";
 import NotFound from "./pages/NotFound";
+import ChihuahuaMarket from "./pages/ChihuahuaMarket";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Profile path="/profile" />
         <BusinessDetails path="/business/:id" />
         <CreateBusiness path="/create-business" />
+        <ChihuahuaMarket path="/chihuahua-market" />
       </Router>
       <ActionsBottomBar />
     </>

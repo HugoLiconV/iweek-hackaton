@@ -52,7 +52,7 @@ const BusinessDetails = () => {
       <h1>{data.name}</h1>
       {data.cm_certification && <ChihuahuaMarketBadge />}
       <Tag title={data.category_name} />
-      <Carousel images={data.photos} />
+      <Carousel images={JSON.parse(data.photos)} />
       <h2>Descripción</h2>
       <p>{data.information}</p>
       <h2>Ubicación</h2>
