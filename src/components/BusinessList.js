@@ -7,8 +7,8 @@ const BusinessCard = ({ business, onClick }) => {
       onClick={() => onClick(business.id)}
       style={{
         display: "flex",
-        margin: 16,
         borderRadius: 8,
+        marginBottom: 16,
         height: 120,
         boxShadow:
           "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
@@ -24,7 +24,7 @@ const BusinessCard = ({ business, onClick }) => {
           objectFit: "cover"
         }}
       />
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
         <div
           style={{
             padding: 16,
@@ -34,7 +34,13 @@ const BusinessCard = ({ business, onClick }) => {
           }}
         >
           <h3 style={{ margin: 0 }}>{business.name}</h3>
-          <span>
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
             {business.ratings} <MdStar />
           </span>
         </div>
@@ -51,11 +57,11 @@ const BusinessCard = ({ business, onClick }) => {
 
 const BusinessList = ({ business, onClick }) => {
   return (
-    <>
+    <div className="container">
       {business.map(b => (
         <BusinessCard key={b.id} business={b} onClick={onClick} />
       ))}
-    </>
+    </div>
   );
 };
 
