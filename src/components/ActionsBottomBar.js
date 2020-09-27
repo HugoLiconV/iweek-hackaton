@@ -4,19 +4,7 @@ import NavLink from "./NavLink";
 
 const ActionsBottomBar = () => {
   return (
-    <nav
-      style={{
-        height: 64,
-        position: "fixed",
-        left: 0,
-        bottom: 0,
-        width: "100%",
-        display: "flex",
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        backgroundColor: "#FFF"
-      }}
-    >
+    <nav className="bottom-navigation">
       <NavLink to="/">Inicio</NavLink>
       <NavLink
         to="/create-business"

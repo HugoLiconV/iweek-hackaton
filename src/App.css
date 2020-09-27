@@ -10,31 +10,27 @@
   --secondary-color: #d1d1e9;
   --tertiary-color: #00ebc7;
   --error-color: #ff5470;
+  --bottom-navigation-height: 64px;
 }
 
-.App {
-  text-align: center;
+body,
+label,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: var(--paragraph-color);
+}
+
+label {
+  font-weight: bold;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .loading-icon {
     animation: loading-spin infinite 1s linear;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
 }
 
 @keyframes loading-spin {
@@ -58,12 +54,13 @@
 
 .container {
   padding: 16px;
+  margin-bottom: var(--bottom-navigation-height);
 }
 .not-found-container {
   flex: 1;
   background-color: var(--highlight-color);
   color: var(--bg-color);
-  height: calc(100vh - 64px);
+  height: calc(100vh - var(--bottom-navigation-height));
   display: flex;
   justify-content: center;
   align-items: center;
@@ -140,7 +137,7 @@ textarea:focus {
 
 .bottomBarAction {
   text-decoration: none;
-  color: #444;
+  color: var(--paragraph-color);
   font-size: 1.5rem;
 }
 
@@ -163,4 +160,39 @@ textarea:focus {
 .flex-center-horizontally {
   display: flex;
   justify-content: center;
+}
+
+.file-input-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 32px;
+  border: 2px solid var(--highlight-color);
+  border-radius: 8px;
+  margin-bottom: 32px;
+  font-size: 1.5rem;
+}
+
+.file-input-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.icon {
+  color: var(--paragraph-color);
+}
+
+.bottom-navigation {
+  height: var(--bottom-navigation-height);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: var(--main-color);
+  box-shadow: rgba(118, 143, 255, 0.1) 0px -8px 24px 0px;
 }
