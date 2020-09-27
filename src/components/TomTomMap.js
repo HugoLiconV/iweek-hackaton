@@ -1,5 +1,29 @@
-import React, { Component } from "react";
+import React, { Component, useCallback, useRef } from "react";
 import config from "../config";
+
+/**
+ * This hook notifies when a map is loaded
+ *
+ * @export
+ * @param {mapLoadedCallback} The callback that handles the event.
+ * @returns {Array} [ref, setRef]
+ */
+export function useMapJustMounted(callback) {
+  const ref = useRef(null);
+  const mounted = useRef(false);
+  const setRef = useCallback(
+    node => {
+      if (node !== null && !mounted.current) {
+        callback(node);
+      }
+      mounted.current = true;
+      // Save a reference to the node
+      ref.current = node;
+    },
+    [callback]
+  );
+  return [ref, setRef];
+}
 
 /**
  * Represents a geographical point with a certain latitude and longitude.
@@ -7,7 +31,6 @@ import config from "../config";
  * @property {number} lat - Latitude in degrees
  * @property {number} lon - Longitude in degrees
  */
-
 class TomTomMap extends Component {
   componentDidMount() {
     this.markers = [];
