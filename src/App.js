@@ -6,18 +6,18 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profiile";
 import CreateBusiness from "./pages/CreateBusiness";
 import BusinessDetails from "./pages/BusinessDetails";
-import { ReactQueryDevtools } from "react-query-devtools";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
     <>
       <Router>
+        <NotFound default />
         <Home path="/" />
         <Profile path="/profile" />
         <BusinessDetails path="/business/:id" />
         <CreateBusiness path="/create-business" />
       </Router>
-      <ReactQueryDevtools initialIsOpen />
       <ActionsBottomBar />
     </>
   );
