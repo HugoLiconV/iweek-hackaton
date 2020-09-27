@@ -2,27 +2,57 @@ import React, { useState } from "react";
 import { MdCameraAlt } from "react-icons/md";
 import TomTomMap, { useMapJustMounted } from "../components/TomTomMap";
 import { geolocated } from "react-geolocated";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { fetchCategories } from "../api/categories";
+import { postBusiness } from "../api/business";
 import ErrorMessage from "../components/ErrorMessage";
 import Loading from "../components/Loading";
+import { useToasts } from "react-toast-notifications";
 
-function PlaceMap({ lat, lng }) {
+function Map({
+  isGeolocationAvailable,
+  isGeolocationEnabled,
+  coords,
+  onDragMarker
+}) {
+  const [marker, setMarker] = useState();
   const [, setRef] = useMapJustMounted(ref => {
-    if (lat && lng) {
-      const position = { lat: parseFloat(lat), lon: parseFloat(lng) };
-      ref.addMarker(position, {
-        title: "Ubicación de negocio",
-        content: "",
-        draggable: true
-      });
+    const { latitude, longitude } = coords;
+    const position = { lat: latitude, lon: longitude };
+    if (!marker) {
+      const _marker = ref
+        .addMarker(position, {
+          title: "Ubicación de negocio",
+          content: "",
+          draggable: true
+        })
+        .on("dragend", event => {
+          const { lat, lng } = event.target._latlng;
+          onDragMarker({ lat, lng });
+        });
+      setMarker(_marker);
     }
   });
+
+  if (!isGeolocationAvailable) {
+    return <span>Tu navegador no soporta Geolocation</span>;
+  }
+  if (!isGeolocationEnabled) {
+    return <span>La geolocalización no esta activada</span>;
+  }
+  if (!coords) {
+    return <span>Obteniendo la informacion de locación&hellip; </span>;
+  }
+
   return <TomTomMap ref={setRef} />;
 }
 
-const CreateBusiness = ({ coords, isGeolocationEnabled, isGeolocationAvailable }) => {
-
+const CreateBusiness = ({
+  coords,
+  isGeolocationEnabled,
+  isGeolocationAvailable
+}) => {
+  const { addToast } = useToasts();
   const { isLoading, error, data: categories } = useQuery(
     "categories",
     fetchCategories,
@@ -30,14 +60,35 @@ const CreateBusiness = ({ coords, isGeolocationEnabled, isGeolocationAvailable }
       retry: false
     }
   );
+  const [createBusiness, { isLoading: postLoading }] = useMutation(
+    postBusiness,
+    {
+      onError() {
+        addToast("Error al crear lugar. Vuelve a intentar", {
+          appearance: "error",
+          autoDismiss: true
+        });
+      },
+      onSuccess() {
+        addToast("El lugar se creó correctamente", {
+          appearance: "success",
+          autoDismiss: true
+        });
+        setLocation();
+        setImages([]);
+        setName();
+        setCategoryId();
+        setDescription();
+      }
+    }
+  );
 
+  const [location, setLocation] = useState();
   const [images, setImages] = useState([]);
   const [name, setName] = useState();
-  const [category_id, setCategoryId] = useState();
-  const [information, setInformation] = useState();
+  const [categoryId, setCategoryId] = useState();
+  const [description, setDescription] = useState();
 
-  console.log("CreateBusiness -> images", images);
-  
   function onSelectImage(e) {
     const files = e.target.files;
     const urls = [];
@@ -56,82 +107,90 @@ const CreateBusiness = ({ coords, isGeolocationEnabled, isGeolocationAvailable }
   }
 
   function onChangeDescription(e) {
-    setInformation(e.target.value);
+    setDescription(e.target.value);
   }
 
-  function CreateBusinessPost() {
+  function onDragMarker({ lat, lng }) {
+    setLocation({ lat, lng });
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
     const data = {
       name: name,
-      category_id: category_id,
-      information: information,
-      latitude: "",
-      longitude: "",
+      category_id: categoryId,
+      information: description,
+      latitude: location.lat,
+      longitude: location.lng,
       cm_certification: false,
       ratings: 0,
       active: true
-    }
-    return fetch('https://warm-savannah-90617.herokuapp.com/businesses', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(response => {
-        if (response.status >= 200 && response.status < 300) {
-            console.log(response);
-            //window.location.reload();
-            return response;
-          } else {
-           console.log('Somthing happened wrong');
-          }
-    }).catch(err => err);
-    }
+    };
+    createBusiness(data);
+  }
 
   if (error) {
     return <ErrorMessage title="No se pudo cargar las categorías" />;
   }
 
-  if (isLoading) {
-    return <Loading title="Cargando categorías..." />;
+  if (isLoading || postLoading) {
+    return <Loading title="Cargando..." />;
   }
 
   return (
     <div className="container">
       <h1>Agregar lugar</h1>
-      <form style={{ display: "flex", flexDirection: "column" }}>
+      <form
+        style={{ display: "flex", flexDirection: "column" }}
+        onSubmit={onSubmit}
+      >
         <label htmlFor="name">Nombre</label>
-        <input type="text" name="name" id="name" autoComplete="off" onChange={onChangeName} />
+        <input
+          type="text"
+          name="name"
+          required
+          id="name"
+          autoComplete="off"
+          value={name}
+          onChange={onChangeName}
+        />
 
         <label htmlFor="categories">Categoría:</label>
-        <select name="category_id" id="categories" onChange={onChangeCategory}>
+        <select
+          required
+          name="category_id"
+          id="categories"
+          value={categoryId}
+          onChange={onChangeCategory}
+        >
           <option value="0">Elige una categoria</option>
-          {categories.map(category => <option key={category.id} value={category.id}>{category.title}</option>)}
+          {categories.map(category => (
+            <option key={category.id} value={category.id}>
+              {category.title}
+            </option>
+          ))}
         </select>
         <label htmlFor="description">Descripción</label>
-        <textarea name="description" id="description" cols="30" rows="10" onChange={onChangeDescription} />
+        <textarea
+          required
+          name="description"
+          id="description"
+          cols="30"
+          value={description}
+          rows="10"
+          onChange={onChangeDescription}
+        />
         <label htmlFor="location">Ubicación</label>
+        <Map
+          coords={coords}
+          onDragMarker={onDragMarker}
+          isGeolocationEnabled={isGeolocationEnabled}
+          isGeolocationAvailable={isGeolocationAvailable}
+        />
 
-        {/*  */}
-        {
-          isGeolocationAvailable === false ? (<div>Tu navegador no soporta Geolocation</div>)
-            : isGeolocationEnabled === false ? (<div>Geolocation no esta activada</div>)
-            : coords !== null ? (<PlaceMap lat={coords.latitude} lng={coords.longitude} />)
-            : (<div>Obteniendo la informacion de locación&hellip; </div>)
-        }
-        <br/>
-        {/* <div style={{ display: "flex" }}>
-          {images.map(image => (
-            <img
-              width={100}
-              key={image}
-              height={100}
-              src={image}
-              alt="upload preview"
-            />
-          ))}
-        </div> */}
+        <br />
         <div className="file-input-container">
-          <label for="upload-image" className="file-input-label">
+          <label htmlFor="upload-image" className="file-input-label">
             <span>Subir fotos</span>
             <MdCameraAlt size={32} className="icon" />
           </label>
@@ -165,7 +224,7 @@ const CreateBusiness = ({ coords, isGeolocationEnabled, isGeolocationAvailable }
             </ul>
           ) : null}
         </div>
-        <button onClick={CreateBusinessPost}>Aceptar</button>
+        <button type="submit">Aceptar</button>
       </form>
     </div>
   );
@@ -173,8 +232,7 @@ const CreateBusiness = ({ coords, isGeolocationEnabled, isGeolocationAvailable }
 
 export default geolocated({
   positionOptions: {
-      enableHighAccuracy: true,
+    enableHighAccuracy: true
   },
-  userDecisionTimeout: 5000,
+  userDecisionTimeout: 5000
 })(CreateBusiness);
-//export default CreateBusiness;

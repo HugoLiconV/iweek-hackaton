@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import { ToastProvider } from "react-toast-notifications";
 
 // if (process.env.NODE_ENV === "development") {
 //   const { worker } = require("./mocks/browser");
@@ -11,7 +12,9 @@ import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ToastProvider>
+      <App />
+    </ToastProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
