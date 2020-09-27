@@ -1,4 +1,3 @@
-import { Link } from "@reach/router";
 import React from "react";
 import ChihuahuaMarketBadge from "../components/ChihuahuaMarketBadge";
 
