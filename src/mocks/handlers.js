@@ -54,5 +54,27 @@ export const handlers = [
         }
       ])
     );
+  }),
+  rest.get(`${API_URL}/me`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.delay(1000),
+      ctx.json({
+        id: 1,
+        first_name: "Hugo",
+        middle_name: "Fernando",
+        last_name: "Licón",
+        second_last_name: "Valenzuela",
+        email: "hugo@gmail.com",
+        phone_number: null,
+        photo:
+          "https://media-exp1.licdn.com/dms/image/C5603AQHI9IXJg52fug/profile-displayphoto-shrink_800_800/0?e=1606348800&v=beta&t=xEg1dpXLqtcV031Y_szerLSrLYfvVyh0CYBvxnLSKPA",
+        level: 3,
+        exp: 65,
+        active: true,
+        created_at: "2020-09-25T12:40:53.758Z",
+        updated_at: "2020-09-25T12:40:53.758Z"
+      })
+    );
   })
 ];
